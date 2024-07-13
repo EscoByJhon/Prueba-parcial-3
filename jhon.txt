@@ -1,0 +1,72 @@
+﻿import json
+
+# Función para mostrar el menú principal
+def mostrar_menu():
+    print("\n----- Menú Principal -----")
+    print("1. Agregar estudiante")
+    print("2. Mostrar estudiantes")
+    print("3. Guardar en archivo")
+    print("4. Cargar desde archivo")
+    print("5. Salir")
+
+# Función para agregar un estudiante
+def agregar_estudiante(estudiantes):
+    nombre = input("Ingrese el nombre del estudiante: ")
+    edad = int(input("Ingrese la edad del estudiante: "))
+    curso = input("Ingrese el curso del estudiante: ")
+    estudiante = {
+        "nombre": nombre,
+        "edad": edad,
+        "curso": curso
+    }
+    estudiantes.append(estudiante)
+    print("Estudiante agregado exitosamente.")
+
+# Función para mostrar todos los estudiantes
+def mostrar_estudiantes(estudiantes):
+    if estudiantes:
+        print("\n----- Lista de Estudiantes -----")
+        for idx, estudiante in enumerate(estudiantes, start=1):
+            print(f"{idx}. Nombre: {estudiante['nombre']}, Edad: {estudiante['edad']}, Curso: {estudiante['curso']}")
+    else:
+        print("No hay estudiantes en la lista.")
+
+# Función para guardar los estudiantes en un archivo
+def guardar_en_archivo(estudiantes):
+    with open("estudiantes.json", "w") as file:
+        json.dump(estudiantes, file)
+    print("Datos guardados en estudiantes.json")
+
+# Función para cargar los estudiantes desde un archivo
+def cargar_desde_archivo():
+    try:
+        with open("estudiantes.json", "r") as file:
+            estudiantes = json.load(file)
+        print("Datos cargados desde estudiantes.json")
+        return estudiantes
+    except FileNotFoundError:
+        print("Archivo no encontrado. Se iniciará con una lista vacía.")
+        return []
+
+# Programa principal
+def main():
+    estudiantes = cargar_desde_archivo()
+    while True:
+        mostrar_menu()
+        opcion = input("Seleccione una opción: ")
+        if opcion == '1':
+            agregar_estudiante(estudiantes)
+        elif opcion == '2':
+            mostrar_estudiantes(estudiantes)
+        elif opcion == '3':
+            guardar_en_archivo(estudiantes)
+        elif opcion == '4':
+            estudiantes = cargar_desde_archivo()
+        elif opcion == '5':
+            print("Saliendo del programa...")
+            break
+        else:
+            print("Opción no válida. Intente de nuevo.")
+
+if __name__ == "__main__":
+    main()
